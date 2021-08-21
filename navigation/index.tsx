@@ -3,27 +3,29 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
+import { Icon } from "@ui-kitten/components";
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+import Colors from "../constants/Colors";
+import PostScreen from "../screens/PostScreen";
+import HomeScreen from "../screens/HomeScreen";
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
+import SearchScreen from "../screens/SearchScreen";
+import ListScreen from "../screens/ListScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { View } from "react-native";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation() {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer linking={LinkingConfiguration} theme={DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -38,10 +40,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+      <Stack.Screen
+        name="Root"
+        component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Post" component={PostScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -54,54 +59,97 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
+        tabBarActiveTintColor: Colors.tabIconSelected,
+        tabBarInactiveTintColor: Colors.tabIconDefault,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          height: 80,
+        },
+      }}
+    >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }: RootTabScreenProps<"Home">) => ({
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarEvaIcon
+              name="grid-outline"
+              color={color}
+              selected={focused}
+            />
           ),
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
+        name="Search"
+        component={SearchScreen}
+        options={({ navigation }: RootTabScreenProps<"Search">) => ({
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarEvaIcon name="search" color={color} selected={focused} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="List"
+        component={ListScreen}
+        options={({ navigation }: RootTabScreenProps<"List">) => ({
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarEvaIcon name="list" color={color} selected={focused} />
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation }: RootTabScreenProps<"Profile">) => ({
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarEvaIcon
+              name="person-outline"
+              color={color}
+              selected={focused}
+            />
+          ),
+        })}
       />
     </BottomTab.Navigator>
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+function TabBarEvaIcon(props: {
+  name: string;
   color: string;
+  selected: boolean;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  const { selected, color, name } = props;
+  return (
+    <>
+      <Icon
+        style={{ width: 24, height: 24, marginBottom: -3 }}
+        fill={color}
+        name={name}
+      />
+      <TabBarDot color={Colors.tabFocusedDot} hidden={!selected} />
+    </>
+  );
+}
+
+function TabBarDot(props: { color: string; hidden: boolean }) {
+  return (
+    <View
+      style={{
+        marginTop: 10,
+        width: 4,
+        height: 4,
+        borderRadius: 100 / 2,
+        backgroundColor: props.color,
+        opacity: props.hidden ? 0 : 1,
+      }}
+    />
+  );
 }
