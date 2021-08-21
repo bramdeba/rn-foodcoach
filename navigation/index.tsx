@@ -43,7 +43,12 @@ function RootNavigator() {
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          contentStyle: {
+            
+          },
+        }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Post" component={PostScreen} />
@@ -70,6 +75,7 @@ function BottomTabNavigator() {
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
           height: 80,
+          position: 'absolute'
         },
       }}
     >
@@ -84,6 +90,7 @@ function BottomTabNavigator() {
               selected={focused}
             />
           ),
+          headerShown: false,
         })}
       />
       <BottomTab.Screen
