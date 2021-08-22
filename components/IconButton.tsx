@@ -22,8 +22,11 @@ export const IconButton = function (props: {
   name: string;
   children?: React.ReactNode | undefined;
   size?: number | undefined;
+  iconTextRatio?: number | undefined;
   padding?: number | undefined;
   borderRadius?: number | undefined;
+  reverse?: boolean | undefined;
+  fullWidth?: boolean | undefined;
 }) {
   const {
     onPress,
@@ -35,20 +38,29 @@ export const IconButton = function (props: {
     children,
     padding = 11,
     size = 18,
+    iconTextRatio = 1,
     borderRadius = 11,
+    reverse = false,
+    fullWidth = false,
   } = props;
 
   const iconButton = (
     <View
-      style={{
-        flexDirection: "row",
-        backgroundColor: transparentize(1 - backgroundOpacity, backgroundColor),
-        padding,
-        borderRadius,
-      }}
+      style={[
+        {
+          flexDirection: reverse ? "row-reverse" : "row",
+          backgroundColor: transparentize(
+            1 - backgroundOpacity,
+            backgroundColor
+          ),
+          padding,
+          borderRadius,
+        },
+        fullWidth ? styles.fullWidth : {},
+      ]}
     >
       <Icon
-        style={{ width: size, height: size }}
+        style={{ width: size * iconTextRatio, height: size * iconTextRatio }}
         fill={iconColor}
         name={name}
       />
@@ -68,11 +80,21 @@ export const IconButton = function (props: {
   );
 
   return (
-    <View style={[{ borderRadius }, styles.buttonWrapper, style]}>
+    <View
+      style={[
+        { borderRadius },
+        styles.buttonWrapper,
+        fullWidth ? {} : styles.matchContent,
+        style,
+      ]}
+    >
       {onPress ? (
         <TouchableNativeFeedback
           onPress={onPress}
-          background={TouchableNativeFeedback.Ripple(darken(0.1, backgroundColor), false)}
+          background={TouchableNativeFeedback.Ripple(
+            darken(0.1, backgroundColor),
+            false
+          )}
         >
           {iconButton}
         </TouchableNativeFeedback>
@@ -85,8 +107,14 @@ export const IconButton = function (props: {
 
 const styles = StyleSheet.create({
   buttonWrapper: {
+    overflow: "hidden",
+  },
+  matchContent: {
     flexDirection: "row",
     flexWrap: "wrap",
-    overflow: "hidden",
+  },
+  fullWidth: {
+    alignItems: "center",
+    justifyContent: "space-between"
   },
 });

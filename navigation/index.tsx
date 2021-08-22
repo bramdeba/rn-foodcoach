@@ -48,7 +48,13 @@ function RootNavigator() {
         }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Post" component={PostScreen} />
+        <Stack.Screen
+          name="Post"
+          component={PostScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );

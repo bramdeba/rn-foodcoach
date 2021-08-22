@@ -6,18 +6,23 @@ import Colors from "../constants/Colors";
 
 export const Title = function (props: {
   children?: React.ReactNode;
+  size?: number | undefined;
   style?: StyleProp<ViewStyle> | undefined;
   color?: string | undefined;
 }) {
+  const { size = 22 } = props;
   return (
     <RNText
-      style={[{
-        fontSize: 22,
-        fontFamily: "Manrope_800ExtraBold",
-        lineHeight: 34,
-        marginBottom: 16,
-        color: props.color || Colors.text
-      }, props.style]}
+      style={[
+        {
+          fontSize: size,
+          fontFamily: "Manrope_800ExtraBold",
+          lineHeight: size * 1.5,
+          marginBottom: 16,
+          color: props.color || Colors.text,
+        },
+        props.style,
+      ]}
     >
       {props.children}
     </RNText>
@@ -45,7 +50,7 @@ export const Underline = function (props: {
           zIndex: 3,
           elevation: 3,
           marginBottom: -6,
-          color: props.color || Colors.text
+          color: props.color || Colors.text,
         }}
       >
         {props.children}
@@ -71,10 +76,13 @@ export const Strong = function (props: {
 }) {
   return (
     <RNText
-      style={[{
-        fontFamily: "Manrope_700Bold",
-        color: props.color || Colors.text
-      }, props.style]}
+      style={[
+        {
+          fontFamily: "Manrope_700Bold",
+          color: props.color || Colors.text,
+        },
+        props.style,
+      ]}
     >
       {props.children}
     </RNText>
@@ -93,7 +101,7 @@ export const Text = function (props: {
           fontSize: 16,
           lineHeight: 28,
           fontFamily: "Manrope_400Regular",
-          color: props.color || Colors.text
+          color: props.color || Colors.text,
         },
         props.style,
       ]}
