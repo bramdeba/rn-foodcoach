@@ -45,9 +45,6 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{
           headerShown: false,
-          contentStyle: {
-            
-          },
         }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -75,7 +72,7 @@ function BottomTabNavigator() {
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
           height: 80,
-          position: 'absolute'
+          position: "absolute",
         },
       }}
     >

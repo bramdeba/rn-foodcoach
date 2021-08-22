@@ -1,13 +1,14 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
+import Toast from "react-native-root-toast";
 
 import { RootTabScreenProps } from "../types";
 import Colors from "../constants/Colors";
 import { Title, Text, Strong, Underline } from "../components/Text";
 import { Button } from "../components/Button";
 import { ScrollView } from "react-native-gesture-handler";
-import { Card, CardWrapper } from "../components/Card";
+import { ActionCard, Card, CardWrapper, TeaserCard } from "../components/Card";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   return (
@@ -16,40 +17,90 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
       <ScrollView style={styles.wrapper}>
         <View style={[styles.header, styles.container]}>
           <Title>
-            Hi <Underline color={Colors.lightBlue}>Josephine</Underline>,
+            Hi <Underline lineColor={Colors.lightBlue}>Josephine</Underline>,
           </Title>
           <Text>
             <Strong>Plan</Strong> je week en laat je inspireren door slimme
             voorstellen.
           </Text>
-          <Button onPress={() => {}}>Begin met plannen</Button>
+          <Button
+            style={{ marginTop: 16 }}
+            onPress={() => Toast.show("Start planning")}
+          >
+            Begin met plannen
+          </Button>
         </View>
         <SectionHeading>
-          Lekker &amp; <Underline color={Colors.keyLime}>gezond</Underline>
+          Lekker &amp; <Underline lineColor={Colors.keyLime}>gezond</Underline>
         </SectionHeading>
         <CardWrapper>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
         </CardWrapper>
+        <TeaserCard
+          backgroundColor={Colors.lightGreen}
+          onPress={() => navigation.navigate("Post")}
+        >
+          Zijn diepvriesgroenten gezond?
+        </TeaserCard>
         <SectionHeading>
-          Niet veel <Underline color={Colors.keyLime}>tijd?</Underline>
+          Niet veel <Underline lineColor={Colors.keyLime}>tijd?</Underline>
         </SectionHeading>
         <CardWrapper>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
         </CardWrapper>
+        <ActionCard onPress={() => Toast.show("Go to recipe list")}>
+          Eigen recepten toevoegen
+        </ActionCard>
         <SectionHeading>
-          Niet veel <Underline color={Colors.keyLime}>tijd?</Underline>
+          Niet veel <Underline lineColor={Colors.keyLime}>tijd?</Underline>
         </SectionHeading>
         <CardWrapper>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
+          <Card
+            onPress={() => Toast.show("Card pressed")}
+            onAddToList={() => Toast.show("Card added to list")}
+          />
         </CardWrapper>
         <View style={styles.tabBar} />
       </ScrollView>
@@ -71,12 +122,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8F5FF",
   },
   tabBar: {
-    height: 80
+    height: 88,
   },
   header: {
     backgroundColor: "#E8F5FF",
-    paddingTop: 16,
-    paddingRight: "25%",
+    paddingTop: 32,
+    paddingRight: "20%",
+    marginBottom: 16,
   },
   wrapper: {
     flex: 1,
@@ -84,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   container: {
-    padding: 24,
+    padding: 32,
   },
   title: {
     fontSize: 20,

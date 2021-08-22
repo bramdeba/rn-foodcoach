@@ -1,36 +1,40 @@
 import React from "react";
 import {
   GestureResponderEvent,
+  StyleProp,
   Text,
   TouchableNativeFeedback,
   View,
+  ViewStyle,
 } from "react-native";
 
 import Colors from "../constants/Colors";
+import { darken } from 'polished';
 
 export const Button = function (props: {
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
   children: React.ReactNode;
   backgroundColor?: string | undefined;
   textColor?: string | undefined;
+  style?: StyleProp<ViewStyle> | undefined;
 }) {
   const {
     onPress,
     children,
     backgroundColor = Colors.background,
     textColor = Colors.text,
+    style
   } = props;
   return (
     <View
-      style={{
-        marginTop: 16,
+      style={[{
         flexDirection: "row",
         flexWrap: "wrap",
-      }}
+      }, style]}
     >
       <TouchableNativeFeedback
         onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(Colors.ripple, false)}
+        background={TouchableNativeFeedback.Ripple(darken(0.1, backgroundColor), false)}
       >
         <View
           style={{
@@ -43,9 +47,10 @@ export const Button = function (props: {
             style={{
               fontFamily: "Manrope_700Bold",
               fontSize: 14,
+              color: textColor
             }}
           >
-            {props.children}
+            {children}
           </Text>
         </View>
       </TouchableNativeFeedback>

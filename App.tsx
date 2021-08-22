@@ -14,6 +14,7 @@ import {
   Manrope_700Bold,
   Manrope_800ExtraBold,
 } from "@expo-google-fonts/manrope";
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import Navigation from "./navigation";
 
@@ -32,7 +33,7 @@ export default function App() {
     return null;
   } else {
     return (
-      <>
+      <RootSiblingParent>
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.light}>
           <SafeAreaProvider>
@@ -40,7 +41,7 @@ export default function App() {
             <StatusBar />
           </SafeAreaProvider>
         </ApplicationProvider>
-      </>
+      </RootSiblingParent>
     );
   }
 }

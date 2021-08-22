@@ -2,11 +2,13 @@ const darkBlue = "#08173E";
 const lightBlue = "#12B7FF";
 const keyLime = "#C7ED0D";
 const red = "#FE3418";
+const lightGreen = "#EDFCE5";
 
 export default {
   lightBlue,
   darkBlue,
   keyLime,
+  lightGreen,
   red,
   text: darkBlue,
   background: "#FFF",
