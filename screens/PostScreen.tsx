@@ -1,16 +1,25 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
+import Toast from "react-native-root-toast";
+import { useEffect, useState } from "react";
 
 import Colors from "../constants/Colors";
 import { Title, Text, Strong } from "../components/Text";
 import { IconButton } from "../components/IconButton";
 import { RootStackScreenProps } from "../types";
-import Toast from "react-native-root-toast";
+import { fetchPost, Post } from "../utils/airtable";
 
 export default function PostScreen({
   navigation,
+  route,
 }: RootStackScreenProps<"Post">) {
+  const [postId, setPostId] = useState<string | undefined>(route.params.postId);
+  const [post, setPost] = useState<Post | undefined>();
+  useEffect(() => {
+    if (postId) fetchPost(postId).then((post) => setPost(post));
+  }, []);
+
   return (
     <>
       <View style={styles.statusBar} />
@@ -26,17 +35,10 @@ export default function PostScreen({
             style={styles.shareIcon}
             onPress={() => Toast.show("Sharing post")}
           />
-          <Title size={30} style={{ maxWidth: "80%" }}>
-            Zijn diepvriesgroenten gezond?
-          </Title>
-          <Text style={styles.p}>
-            Diepvriesgroenten worden na oogst vaak direct ingevroren zodat er
-            een minimaal verlies aan mineralen en vitaminen plaatsvindt.
-          </Text>
-          <Text style={styles.p}>
-            Kook je groenten niet te lang. Door groenten te koken verlies je
-            doorgaans 20 - 50 % van de vitaminen.
-          </Text>
+          <Title size={30}>{post?.fields.Title}</Title>
+          {post?.fields.Content.split("\n\n").map((p, i) => (
+            <Text key={i} style={styles.p}>{p}</Text>
+          ))}
           <IconButton
             name="arrow-forward-outline"
             reverse={true}
@@ -47,7 +49,7 @@ export default function PostScreen({
             iconTextRatio={1.5}
             onPress={() => Toast.show("Read more")}
           >
-            <Strong>Lees meer</Strong>
+            <Strong>{post?.fields.CTA}</Strong>
           </IconButton>
         </View>
       </View>

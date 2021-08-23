@@ -15,8 +15,11 @@ import {
   Manrope_800ExtraBold,
 } from "@expo-google-fonts/manrope";
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { LogBox } from 'react-native';
 
 import Navigation from "./navigation";
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 export default function App() {
   let [fontsLoaded] = useFonts({

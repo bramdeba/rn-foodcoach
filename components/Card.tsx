@@ -4,8 +4,8 @@ import {
   Dimensions,
   StyleSheet,
   TouchableNativeFeedback,
+  Image
 } from "react-native";
-import Image from "react-native-scalable-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { darken } from "polished";
 import { GestureResponderEvent } from "react-native";
@@ -15,19 +15,21 @@ import Colors from "../constants/Colors";
 import { Strong, Text, Title } from "./Text";
 import { Badge } from "./Badge";
 import { IconButton } from "./IconButton";
+import { Recipe } from "../utils/airtable";
 
 export const Card = function (props: {
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
   onAddToList?: ((event: GestureResponderEvent) => void) | undefined;
+  recipe: Recipe;
 }) {
-  const { onPress, onAddToList } = props;
+  const { onPress, onAddToList, recipe } = props;
 
   const card = (
     <View style={{ padding: 16 }}>
       <View>
         <Image
           width={Dimensions.get("window").width * 0.7 - 32}
-          source={require("./../assets/images/dish.png")}
+          source={{ uri: recipe.fields.Image[0]?.thumbnails.large.url }}
           style={styles.image}
         />
         <IconButton name="plus" style={styles.addIcon} onPress={onAddToList} />
@@ -39,13 +41,13 @@ export const Card = function (props: {
           borderRadius={4}
           style={styles.time}
         >
-          30 min
+          {recipe.fields.Duration / 60} min
         </IconButton>
       </View>
       <Badge color={[Colors.lightBlue, Colors.red][Math.round(Math.random())]}>
-        Glucosevrij
+        {recipe.fields.Tags[0]}
       </Badge>
-      <Text style={styles.title}>Omelette met groenten</Text>
+      <Text style={styles.title}>{recipe.fields.Name}</Text>
     </View>
   );
   return (
@@ -91,8 +93,9 @@ export const TeaserCard = function (props: {
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
   children?: React.ReactNode | undefined;
   backgroundColor?: string | undefined;
+  cta: string | undefined;
 }) {
-  const { onPress, children, backgroundColor = Colors.keyLime } = props;
+  const { onPress, children, backgroundColor = Colors.keyLime, cta } = props;
 
   const card = (
     <View style={{ paddingVertical: 32, paddingHorizontal: 36 }}>
@@ -100,7 +103,7 @@ export const TeaserCard = function (props: {
       <View
         style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}
       >
-        <Strong>Lees meer</Strong>
+        <Strong>{cta}</Strong>
         <Icon
           fill={Colors.text}
           name="arrow-forward-outline"
@@ -232,6 +235,7 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 10,
+    aspectRatio: 3/2
   },
   title: {
     fontFamily: "Manrope_700Bold",

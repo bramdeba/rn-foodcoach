@@ -1,5 +1,6 @@
 import * as React from "react";
-import { StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 import Toast from "react-native-root-toast";
 
@@ -9,8 +10,22 @@ import { Title, Text, Strong, Underline } from "../components/Text";
 import { Button } from "../components/Button";
 import { ScrollView } from "react-native-gesture-handler";
 import { ActionCard, Card, CardWrapper, TeaserCard } from "../components/Card";
+import { fetchRandomPost, fetchRecipes, Post, Recipe } from "../utils/airtable";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+  const [recipes, setRecipes] = React.useState<Recipe[]>([]);
+  const [post, setPost] = React.useState<Post>();
+
+  useEffect(() => {
+    if (!recipes.length) {
+      fetchRecipes(5).then((recipes) => setRecipes(recipes));
+    }
+    
+    if (!post) {
+      fetchRandomPost().then((post) => setPost(post));
+    }
+  }, []);
+
   return (
     <>
       <View style={styles.statusBar} />
@@ -33,75 +48,85 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         <SectionHeading>
           Lekker &amp; <Underline lineColor={Colors.keyLime}>gezond</Underline>
         </SectionHeading>
-        <CardWrapper>
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-        </CardWrapper>
+        {recipes.length === 0 && (
+          <ActivityIndicator size="large" color={Colors.keyLime} />
+        )}
+        {recipes.length > 0 && (
+          <CardWrapper>
+            {recipes
+              .sort(
+                (a, b) =>
+                  new Date(a.createdTime).getTime() -
+                  new Date(b.createdTime).getTime()
+              )
+              .map((recipe) => (
+                <Card
+                  key={recipe.fields.ID}
+                  recipe={recipe}
+                  onPress={() => Toast.show("Card pressed")}
+                  onAddToList={() => Toast.show("Card added to list")}
+                />
+              ))}
+          </CardWrapper>
+        )}
         <TeaserCard
           backgroundColor={Colors.lightGreen}
-          onPress={() => navigation.navigate("Post")}
+          onPress={() => navigation.navigate("Post", {postId: post?.id})}
+          cta={post?.fields.CTA}
         >
-          Zijn diepvriesgroenten gezond?
+          {post?.fields.Title}
         </TeaserCard>
         <SectionHeading>
           Niet veel <Underline lineColor={Colors.keyLime}>tijd?</Underline>
         </SectionHeading>
-        <CardWrapper>
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-        </CardWrapper>
+        {recipes.length === 0 && (
+          <ActivityIndicator size="large" color={Colors.keyLime} />
+        )}
+        {recipes.length > 0 && (
+          <CardWrapper>
+            {recipes
+              .sort(
+                (a, b) =>
+                  new Date(a.createdTime).getTime() -
+                  new Date(b.createdTime).getTime()
+              )
+              .map((recipe) => (
+                <Card
+                  key={recipe.fields.ID}
+                  recipe={recipe}
+                  onPress={() => Toast.show("Card pressed")}
+                  onAddToList={() => Toast.show("Card added to list")}
+                />
+              ))}
+          </CardWrapper>
+        )}
         <ActionCard onPress={() => Toast.show("Go to recipe list")}>
           Eigen recepten toevoegen
         </ActionCard>
         <SectionHeading>
           Niet veel <Underline lineColor={Colors.keyLime}>tijd?</Underline>
         </SectionHeading>
-        <CardWrapper>
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-          <Card
-            onPress={() => Toast.show("Card pressed")}
-            onAddToList={() => Toast.show("Card added to list")}
-          />
-        </CardWrapper>
+        {recipes.length === 0 && (
+          <ActivityIndicator size="large" color={Colors.keyLime} />
+        )}
+        {recipes.length > 0 && (
+          <CardWrapper>
+            {recipes
+              .sort(
+                (a, b) =>
+                  new Date(a.createdTime).getTime() -
+                  new Date(b.createdTime).getTime()
+              )
+              .map((recipe) => (
+                <Card
+                  key={recipe.fields.ID}
+                  recipe={recipe}
+                  onPress={() => Toast.show("Card pressed")}
+                  onAddToList={() => Toast.show("Card added to list")}
+                />
+              ))}
+          </CardWrapper>
+        )}
         <View style={styles.tabBar} />
       </ScrollView>
     </>

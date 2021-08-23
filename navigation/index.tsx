@@ -54,6 +54,9 @@ function RootNavigator() {
           options={{
             headerShown: false,
           }}
+          initialParams={{
+            postId: undefined
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>
