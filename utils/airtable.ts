@@ -81,5 +81,6 @@ export interface Post {
     Title: string;
     CTA: string;
     Content: string;
+    Permalink: string;
   };
 }

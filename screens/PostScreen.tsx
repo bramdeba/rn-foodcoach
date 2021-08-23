@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View } from "react-native";
+import { Share, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 import Toast from "react-native-root-toast";
 import { useEffect, useState } from "react";
@@ -17,6 +17,20 @@ export default function PostScreen({
 }: RootStackScreenProps<"Post">) {
   const [postId, setPostId] = useState<string | undefined>(route.params.postId);
   const [post, setPost] = useState<Post | undefined>();
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        title: post?.fields.Title,
+        message: post?.fields.Permalink || post?.fields.Content,
+        url: post?.fields.Permalink || 'https://www.bothrs.com/',
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+
   useEffect(() => {
     if (postId) fetchPost(postId).then((post) => setPost(post));
   }, []);
@@ -34,7 +48,7 @@ export default function PostScreen({
           <IconButton
             name="share-outline"
             style={styles.shareIcon}
-            onPress={() => Toast.show("Sharing post")}
+            onPress={handleShare}
           />
           <Skeleton
             show={!post}
