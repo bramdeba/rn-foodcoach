@@ -4,7 +4,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableNativeFeedback,
-  Image
+  Image,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { darken } from "polished";
@@ -16,6 +16,7 @@ import { Strong, Text, Title } from "./Text";
 import { Badge } from "./Badge";
 import { IconButton } from "./IconButton";
 import { Recipe } from "../utils/airtable";
+import { Skeleton } from "@motify/skeleton";
 
 export const Card = function (props: {
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
@@ -71,6 +72,35 @@ export const Card = function (props: {
   );
 };
 
+export const SkeletonCard = function () {
+  const card = (
+    <View style={{ padding: 16 }}>
+      <View>
+        <Skeleton
+          height={((Dimensions.get("window").width * 0.7 - 32) / 3) * 2}
+          width={Dimensions.get("window").width * 0.7 - 32}
+          colors={[Colors.skeletonLight, Colors.skeletonDark]}
+        />
+      </View>
+      <View style={{ height: 8 }} />
+      <Skeleton
+        height={24}
+        width={100}
+        show={true}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
+      />
+      <View style={{ height: 13 }} />
+      <Skeleton
+        show={true}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
+      >
+        <Text style={styles.title} />
+      </Skeleton>
+    </View>
+  );
+  return <View style={[styles.card, styles.cardShadow]}>{card}</View>;
+};
+
 export const CardWrapper = function (props: { children: React.ReactNode }) {
   return (
     <View style={styles.cardWrapper}>
@@ -93,23 +123,40 @@ export const TeaserCard = function (props: {
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
   children?: React.ReactNode | undefined;
   backgroundColor?: string | undefined;
-  cta: string | undefined;
+  cta: string | undefined;
 }) {
   const { onPress, children, backgroundColor = Colors.keyLime, cta } = props;
 
   const card = (
     <View style={{ paddingVertical: 32, paddingHorizontal: 36 }}>
-      <Title>{children}</Title>
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}
+      <Skeleton
+        show={!children}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
       >
-        <Strong>{cta}</Strong>
-        <Icon
-          fill={Colors.text}
-          name="arrow-forward-outline"
-          style={{ width: 24, height: 24, marginLeft: 8 }}
-        />
-      </View>
+        <Title>{children}</Title>
+      </Skeleton>
+      {!cta && (
+        <>
+          <View style={{ height: 16 }} />
+          <Skeleton
+            width={120}
+            height={28}
+            colors={[Colors.skeletonLight, Colors.skeletonDark]}
+          />
+        </>
+      )}
+      {cta && (
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}
+        >
+          <Strong>{cta}</Strong>
+          <Icon
+            fill={Colors.text}
+            name="arrow-forward-outline"
+            style={{ width: 24, height: 24, marginLeft: 8 }}
+          />
+        </View>
+      )}
     </View>
   );
   return (
@@ -235,7 +282,7 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 10,
-    aspectRatio: 3/2
+    aspectRatio: 3 / 2,
   },
   title: {
     fontFamily: "Manrope_700Bold",

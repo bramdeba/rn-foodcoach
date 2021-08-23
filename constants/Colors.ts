@@ -17,4 +17,6 @@ export default {
   tabIconSelected: darkBlue,
   tabFocusedDot: lightBlue,
   ripple: "#E5E5E5",
+  skeletonLight: "rgba(0,0,0,0.04)",
+  skeletonDark: "rgba(0,0,0,0.20)",
 };

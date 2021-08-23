@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 import Toast from "react-native-root-toast";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@motify/skeleton";
 
 import Colors from "../constants/Colors";
 import { Title, Text, Strong } from "../components/Text";
@@ -35,11 +36,23 @@ export default function PostScreen({
             style={styles.shareIcon}
             onPress={() => Toast.show("Sharing post")}
           />
-          <Title size={30}>{post?.fields.Title}</Title>
-          {post?.fields.Content.split("\n\n").map((p, i) => (
-            <Text key={i} style={styles.p}>{p}</Text>
-          ))}
-          <IconButton
+          <Skeleton
+            show={!post}
+            colors={[Colors.skeletonLight, Colors.skeletonDark]}
+          >
+            <Title size={30}>{post?.fields.Title}</Title>
+          </Skeleton>
+          {!post && <BodySkeleton />}
+          {post && (
+            <>
+              {post?.fields.Content.split("\n\n").map((p, i) => (
+                <Text key={i} style={styles.p}>
+                  {p}
+                </Text>
+              ))}
+            </>
+          )}
+          {post && <IconButton
             name="arrow-forward-outline"
             reverse={true}
             fullWidth={true}
@@ -50,13 +63,36 @@ export default function PostScreen({
             onPress={() => Toast.show("Read more")}
           >
             <Strong>{post?.fields.CTA}</Strong>
-          </IconButton>
+          </IconButton>}
         </View>
       </View>
     </>
   );
 }
 
+function BodySkeleton() {
+  return (
+    <View style={{ paddingVertical: 24 }}>
+      <Skeleton
+        width={"100%"}
+        height={28}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
+      />
+      <View style={{ height: 8 }} />
+      <Skeleton
+        width={"100%"}
+        height={28}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
+      />
+      <View style={{ height: 8 }} />
+      <Skeleton
+        width={"100%"}
+        height={28}
+        colors={[Colors.skeletonLight, Colors.skeletonDark]}
+      />
+    </View>
+  );
+}
 const styles = StyleSheet.create({
   statusBar: {
     height: Constants.statusBarHeight + 8,
