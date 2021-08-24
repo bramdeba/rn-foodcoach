@@ -42,7 +42,7 @@ export default function PostScreen({
         <ScrollView>
           <View style={{ height: Constants.statusBarHeight }} />
           <Image
-            source={require("../assets/images/veggies/post.png")}
+            source={require("../assets/images/veggies/post.jpg")}
             width={Layout.window.width}
             resizeMode={"contain"}
             style={{ position: "absolute", top: 0, left: 0, right: 0 }}

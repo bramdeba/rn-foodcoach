@@ -187,7 +187,7 @@ export const TeaserCard = function (props: {
             <ScalableImage
               width={Layout.container.width}
               style={styles.teaserImageBackground}
-              source={require("./../assets/images/veggies/teaser.png")}
+              source={require("./../assets/images/veggies/teaser.jpg")}
             />
             <Pressable
               onPress={onPress}
@@ -212,7 +212,7 @@ export const TeaserCard = function (props: {
           <View style={[styles.hideOverflow]}>
             <ScalableImage
               style={styles.teaserImageBackground}
-              source={require("./../assets/images/veggies/teaser.png")}
+              source={require("./../assets/images/veggies/teaser.jpg")}
             />
             {card}
           </View>

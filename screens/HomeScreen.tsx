@@ -74,7 +74,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Image style={{backgroundColor: Colors.babyBlue}} width={Layout.window.width} source={require('./../assets/images/veggies/hero.png')} />
+        <Image style={{backgroundColor: Colors.babyBlue}} width={Layout.window.width} source={require('./../assets/images/veggies/hero.jpg')} />
         <View style={[styles.header, styles.container]}>
           <Title>
             Hi <Underline lineColor={Colors.lightBlue}>Josephine</Underline>,
