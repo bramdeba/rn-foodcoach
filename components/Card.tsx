@@ -1,11 +1,12 @@
 import React from "react";
 import {
   View,
-  Dimensions,
+  Image,
   StyleSheet,
   TouchableNativeFeedback,
-  Image,
 } from "react-native";
+import Layout from './../constants/Layout';
+import ScalableImage from "react-native-scalable-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { darken } from "polished";
 import { GestureResponderEvent } from "react-native";
@@ -26,10 +27,10 @@ export const Card = function (props: {
   const { onPress, onAddToList, recipe } = props;
 
   const card = (
-    <View style={{ padding: 16 }}>
+    <View style={{ padding: Layout.card.padding }}>
       <View>
         <Image
-          width={Dimensions.get("window").width * 0.7 - 32}
+          width={Layout.window.width * 0.7 - Layout.card.padding * 2}
           source={{ uri: recipe.fields.Image[0]?.thumbnails.large.url }}
           style={styles.image}
         />
@@ -74,11 +75,11 @@ export const Card = function (props: {
 
 export const SkeletonCard = function () {
   const card = (
-    <View style={{ padding: 16 }}>
+    <View style={{ padding: Layout.card.padding }}>
       <View>
         <Skeleton
-          height={((Dimensions.get("window").width * 0.7 - 32) / 3) * 2}
-          width={Dimensions.get("window").width * 0.7 - 32}
+          height={((Layout.window.width * 0.7 - Layout.card.padding * 2) / 3) * 2}
+          width={Layout.window.width * 0.7 - Layout.card.padding * 2}
           colors={[Colors.skeletonLight, Colors.skeletonDark]}
         />
       </View>
@@ -163,6 +164,11 @@ export const TeaserCard = function (props: {
     <>
       {onPress ? (
         <View style={[styles.teaserCard, { backgroundColor }]}>
+          <ScalableImage
+            width={Layout.container.width}
+            style={styles.teaserImageBackground}
+            source={require("./../assets/images/veggies/teaser.png")}
+          />
           <TouchableNativeFeedback
             onPress={onPress}
             background={TouchableNativeFeedback.Ripple(
@@ -170,11 +176,17 @@ export const TeaserCard = function (props: {
               false
             )}
           >
-            {card}
+            <View>{card}</View>
           </TouchableNativeFeedback>
         </View>
       ) : (
-        <View style={[styles.teaserCard, { backgroundColor }]}>{card}</View>
+        <View style={[styles.teaserCard, { backgroundColor }]}>
+          <ScalableImage
+            style={styles.teaserImageBackground}
+            source={require("./../assets/images/veggies/teaser.png")}
+          />
+          {card}
+        </View>
       )}
     </>
   );
@@ -217,6 +229,8 @@ export const ActionCard = function (props: {
     <>
       {onPress ? (
         <View style={[styles.actionCard, styles.cardShadow]}>
+          <ScalableImage source={require('./../assets/images/veggies/action.png')} style={{position: "absolute", left: 0, top: 0}} />
+          <ScalableImage source={require('./../assets/images/veggies/action2.png')} style={{position: "absolute", right: 0, bottom: 0}} />
           <TouchableNativeFeedback
             onPress={onPress}
             background={TouchableNativeFeedback.Ripple(
@@ -241,7 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     marginLeft: 16,
     borderRadius: 20,
-    width: Dimensions.get("window").width * 0.7,
+    width: Layout.window.width * 0.7,
   },
   teaserCard: {
     overflow: "hidden",
@@ -249,7 +263,14 @@ const styles = StyleSheet.create({
     marginLeft: 32,
     marginBottom: 16,
     borderRadius: 20,
-    width: Dimensions.get("window").width - 64,
+    width: Layout.container.width,
+  },
+  teaserImageBackground: {
+    position: "absolute",
+    width: "100%",
+    left: 0,
+    right: 0,
+    top: 0,
   },
   actionCard: {
     overflow: "hidden",
@@ -258,7 +279,7 @@ const styles = StyleSheet.create({
     marginLeft: 32,
     marginBottom: 16,
     borderRadius: 20,
-    width: Dimensions.get("window").width - 64,
+    width: Layout.container.width,
   },
   cardShadow: {
     shadowRadius: 44,

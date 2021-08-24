@@ -16,6 +16,8 @@ import {
   TeaserCard,
 } from "../components/Card";
 import { fetchRandomPost, fetchRecipes, Post, Recipe } from "../utils/airtable";
+import Image from "react-native-scalable-image";
+import Layout from "../constants/Layout";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const [refreshing, setRefreshing] = useState(false);
@@ -66,13 +68,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 
   return (
     <>
-      <View style={styles.statusBar} />
       <ScrollView
         style={styles.wrapper}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <Image style={{backgroundColor: Colors.babyBlue}} width={Layout.window.width} source={require('./../assets/images/veggies/hero.png')} />
         <View style={[styles.header, styles.container]}>
           <Title>
             Hi <Underline lineColor={Colors.lightBlue}>Josephine</Underline>,
@@ -132,17 +134,17 @@ function SectionHeading(props: { children: React.ReactNode }) {
 }
 
 const styles = StyleSheet.create({
-  statusBar: {
-    height: Constants.statusBarHeight + 8,
-    backgroundColor: "#E8F5FF",
-  },
   tabBar: {
     height: 88,
   },
   header: {
-    backgroundColor: "#E8F5FF",
-    paddingTop: 32,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingTop: '10%',
     paddingRight: "20%",
+    marginTop: Constants.statusBarHeight + 8,
     marginBottom: 16,
   },
   wrapper: {

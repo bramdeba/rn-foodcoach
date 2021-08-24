@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Share, StyleSheet, View } from "react-native";
+import { Share, StyleSheet, View, ScrollView } from "react-native";
+import Image from "react-native-scalable-image";
 import Constants from "expo-constants";
 import Toast from "react-native-root-toast";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import { Title, Text, Strong } from "../components/Text";
 import { IconButton } from "../components/IconButton";
 import { RootStackScreenProps } from "../types";
 import { fetchPost, Post } from "../utils/airtable";
+import Layout from "../constants/Layout";
 
 export default function PostScreen({
   navigation,
@@ -23,13 +25,12 @@ export default function PostScreen({
       await Share.share({
         title: post?.fields.Title,
         message: post?.fields.Permalink || post?.fields.Content,
-        url: post?.fields.Permalink || 'https://www.bothrs.com/',
+        url: post?.fields.Permalink || "https://www.bothrs.com/",
       });
     } catch (error) {
       alert(error.message);
     }
   };
-
 
   useEffect(() => {
     if (postId) fetchPost(postId).then((post) => setPost(post));
@@ -37,48 +38,58 @@ export default function PostScreen({
 
   return (
     <>
-      <View style={styles.statusBar} />
       <View style={styles.wrapper}>
-        <View style={styles.container}>
-          <IconButton
-            name="arrow-upward-outline"
-            style={styles.backIcon}
-            onPress={() => navigation.goBack()}
+        <ScrollView>
+          <View style={{ height: Constants.statusBarHeight }} />
+          <Image
+            source={require("../assets/images/veggies/post.png")}
+            width={Layout.window.width}
+            resizeMode={"contain"}
+            style={{ position: "absolute", top: 0, left: 0, right: 0 }}
           />
-          <IconButton
-            name="share-outline"
-            style={styles.shareIcon}
-            onPress={handleShare}
-          />
-          <Skeleton
-            show={!post}
-            colors={[Colors.skeletonLight, Colors.skeletonDark]}
-          >
-            <Title size={30}>{post?.fields.Title}</Title>
-          </Skeleton>
-          {!post && <BodySkeleton />}
-          {post && (
-            <>
-              {post?.fields.Content.split("\n\n").map((p, i) => (
-                <Text key={i} style={styles.p}>
-                  {p}
-                </Text>
-              ))}
-            </>
-          )}
-          {post && <IconButton
-            name="arrow-forward-outline"
-            reverse={true}
-            fullWidth={true}
-            style={{ marginTop: 16 }}
-            size={16}
-            padding={16}
-            iconTextRatio={1.5}
-            onPress={() => Toast.show("Read more")}
-          >
-            <Strong>{post?.fields.CTA}</Strong>
-          </IconButton>}
-        </View>
+          <View style={styles.container}>
+            <IconButton
+              name="arrow-upward-outline"
+              style={styles.backIcon}
+              onPress={() => navigation.goBack()}
+            />
+            <IconButton
+              name="share-outline"
+              style={[styles.shareIcon, styles.iconShadow]}
+              onPress={handleShare}
+            />
+            <Skeleton
+              show={!post}
+              colors={[Colors.skeletonLight, Colors.skeletonDark]}
+            >
+              <Title style={{maxWidth: '95%'}} size={30}>{post?.fields.Title}</Title>
+            </Skeleton>
+            {!post && <BodySkeleton />}
+            {post && (
+              <>
+                {post?.fields.Content.split("\n\n").map((p, i) => (
+                  <Text key={i} style={styles.p}>
+                    {p}
+                  </Text>
+                ))}
+              </>
+            )}
+            {post && (
+              <IconButton
+                name="arrow-forward-outline"
+                reverse={true}
+                fullWidth={true}
+                style={{ marginTop: 16 }}
+                size={16}
+                padding={16}
+                iconTextRatio={1.5}
+                onPress={() => Toast.show("Read more")}
+              >
+                <Strong>{post?.fields.CTA}</Strong>
+              </IconButton>
+            )}
+          </View>
+        </ScrollView>
       </View>
     </>
   );
@@ -108,10 +119,6 @@ function BodySkeleton() {
   );
 }
 const styles = StyleSheet.create({
-  statusBar: {
-    height: Constants.statusBarHeight + 8,
-    backgroundColor: Colors.lightGreen,
-  },
   wrapper: {
     flex: 1,
     flexDirection: "column",
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 32,
-    paddingTop: 128,
+    paddingTop: '65%',
   },
   p: {
     marginVertical: 12,
@@ -138,4 +145,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
   },
+  iconShadow: {
+    shadowRadius: 44,
+    shadowOffset: {
+      width: 0,
+      height: 16,
+    },
+    shadowColor: Colors.darkBlue,
+    shadowOpacity: 0.13,
+    elevation: 20,
+  }
 });
