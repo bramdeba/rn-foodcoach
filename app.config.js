@@ -1,17 +1,17 @@
 import "dotenv/config";
 
 export default {
-  name: "food-coach",
+  name: "FoodCoach",
   slug: "food-coach",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
-  scheme: "myapp",
+  scheme: "foodcoach",
   userInterfaceStyle: "automatic",
   splash: {
     image: "./assets/images/splash.png",
-    resizeMode: "contain",
-    backgroundColor: "#ffffff",
+    resizeMode: "cover",
+    backgroundColor: "#EDFCE5",
   },
   updates: {
     fallbackToCacheTimeout: 0,
