@@ -49,7 +49,7 @@ export const Underline = function (props: {
           fontFamily: "Manrope_800ExtraBold",
           zIndex: 3,
           elevation: 3,
-          marginBottom: Platform.OS === 'android' ? -6 : -2,
+          marginBottom: Platform.OS === 'android' ? -5 : -2,
           color: props.color || Colors.text,
         }}
       >
