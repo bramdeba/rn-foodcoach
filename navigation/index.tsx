@@ -22,6 +22,7 @@ import SearchScreen from "../screens/SearchScreen";
 import ListScreen from "../screens/ListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Platform, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Navigation() {
   return (
@@ -72,6 +73,7 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+  const insets = useSafeAreaInsets();
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -82,7 +84,7 @@ function BottomTabNavigator() {
         tabBarStyle: {
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
-          height: 80,
+          height: 80 + insets.bottom,
           position: "absolute",
         },
       }}
