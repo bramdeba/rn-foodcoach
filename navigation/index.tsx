@@ -21,7 +21,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import SearchScreen from "../screens/SearchScreen";
 import ListScreen from "../screens/ListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 
 export default function Navigation() {
   return (
@@ -47,7 +47,9 @@ function RootNavigator() {
           headerShown: false,
         }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
+      <Stack.Group
+        screenOptions={{ presentation: Platform.OS === 'android' ? 'modal' : 'fullScreenModal' }}
+      >
         <Stack.Screen
           name="Post"
           component={PostScreen}
@@ -55,7 +57,7 @@ function RootNavigator() {
             headerShown: false,
           }}
           initialParams={{
-            postId: undefined
+            postId: undefined,
           }}
         />
       </Stack.Group>

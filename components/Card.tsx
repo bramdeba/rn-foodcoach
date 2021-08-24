@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableNativeFeedback,
-} from "react-native";
-import Layout from './../constants/Layout';
+import { View, Image, StyleSheet, TouchableNativeFeedback } from "react-native";
+import Layout from "./../constants/Layout";
 import ScalableImage from "react-native-scalable-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { darken } from "polished";
@@ -56,18 +51,23 @@ export const Card = function (props: {
     <>
       {onPress ? (
         <View style={[styles.card, styles.cardShadow]}>
-          <TouchableNativeFeedback
-            onPress={onPress}
-            background={TouchableNativeFeedback.Ripple(
-              darken(0.1, Colors.background),
-              false
-            )}
-          >
-            {card}
-          </TouchableNativeFeedback>
+          <View style={[styles.hideOverflow]}>
+            <TouchableNativeFeedback
+              onPress={onPress}
+              background={TouchableNativeFeedback.Ripple(
+                darken(0.1, Colors.background),
+                false
+              )}
+            >
+              {card}
+            </TouchableNativeFeedback>
+          </View>
         </View>
       ) : (
-        <View style={[styles.card, styles.cardShadow]}>{card}</View>
+        <View style={[styles.card, styles.cardShadow]}>
+          {" "}
+          <View style={[styles.hideOverflow]}>{card}</View>
+        </View>
       )}
     </>
   );
@@ -78,7 +78,9 @@ export const SkeletonCard = function () {
     <View style={{ padding: Layout.card.padding }}>
       <View>
         <Skeleton
-          height={((Layout.window.width * 0.7 - Layout.card.padding * 2) / 3) * 2}
+          height={
+            ((Layout.window.width * 0.7 - Layout.card.padding * 2) / 3) * 2
+          }
           width={Layout.window.width * 0.7 - Layout.card.padding * 2}
           colors={[Colors.skeletonLight, Colors.skeletonDark]}
         />
@@ -99,7 +101,11 @@ export const SkeletonCard = function () {
       </Skeleton>
     </View>
   );
-  return <View style={[styles.card, styles.cardShadow]}>{card}</View>;
+  return (
+    <View style={[styles.card, styles.cardShadow]}>
+      <View style={[styles.hideOverflow]}>{card}</View>
+    </View>
+  );
 };
 
 export const CardWrapper = function (props: { children: React.ReactNode }) {
@@ -164,28 +170,32 @@ export const TeaserCard = function (props: {
     <>
       {onPress ? (
         <View style={[styles.teaserCard, { backgroundColor }]}>
-          <ScalableImage
-            width={Layout.container.width}
-            style={styles.teaserImageBackground}
-            source={require("./../assets/images/veggies/teaser.png")}
-          />
-          <TouchableNativeFeedback
-            onPress={onPress}
-            background={TouchableNativeFeedback.Ripple(
-              darken(0.1, backgroundColor),
-              false
-            )}
-          >
-            <View>{card}</View>
-          </TouchableNativeFeedback>
+          <View style={[styles.hideOverflow]}>
+            <ScalableImage
+              width={Layout.container.width}
+              style={styles.teaserImageBackground}
+              source={require("./../assets/images/veggies/teaser.png")}
+            />
+            <TouchableNativeFeedback
+              onPress={onPress}
+              background={TouchableNativeFeedback.Ripple(
+                darken(0.1, backgroundColor),
+                false
+              )}
+            >
+              <View>{card}</View>
+            </TouchableNativeFeedback>
+          </View>
         </View>
       ) : (
         <View style={[styles.teaserCard, { backgroundColor }]}>
-          <ScalableImage
-            style={styles.teaserImageBackground}
-            source={require("./../assets/images/veggies/teaser.png")}
-          />
-          {card}
+          <View style={[styles.hideOverflow]}>
+            <ScalableImage
+              style={styles.teaserImageBackground}
+              source={require("./../assets/images/veggies/teaser.png")}
+            />
+            {card}
+          </View>
         </View>
       )}
     </>
@@ -229,40 +239,52 @@ export const ActionCard = function (props: {
     <>
       {onPress ? (
         <View style={[styles.actionCard, styles.cardShadow]}>
-          <ScalableImage source={require('./../assets/images/veggies/action.png')} style={{position: "absolute", left: 0, top: 0}} />
-          <ScalableImage source={require('./../assets/images/veggies/action2.png')} style={{position: "absolute", right: 0, bottom: 0}} />
-          <TouchableNativeFeedback
-            onPress={onPress}
-            background={TouchableNativeFeedback.Ripple(
-              darken(0.1, Colors.background),
-              false
-            )}
-            style={{ padding: 16 }}
-          >
-            {card}
-          </TouchableNativeFeedback>
+          <View style={[styles.hideOverflow]}>
+            <ScalableImage
+              source={require("./../assets/images/veggies/action.png")}
+              style={{ position: "absolute", left: 0, top: 0 }}
+            />
+            <ScalableImage
+              source={require("./../assets/images/veggies/action2.png")}
+              style={{ position: "absolute", right: 0, bottom: 0 }}
+            />
+            <TouchableNativeFeedback
+              onPress={onPress}
+              background={TouchableNativeFeedback.Ripple(
+                darken(0.1, Colors.background),
+                false
+              )}
+              style={{ padding: 16 }}
+            >
+              {card}
+            </TouchableNativeFeedback>
+          </View>
         </View>
       ) : (
-        <View style={[styles.actionCard, styles.cardShadow]}>{card}</View>
+        <View style={[styles.actionCard, styles.cardShadow]}>
+          <View style={[styles.hideOverflow]}>{card}</View>
+        </View>
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  hideOverflow: {
     overflow: "hidden",
+    borderRadius: 20,
+  },
+  card: {
+    borderRadius: 20,
     backgroundColor: Colors.background,
     marginLeft: 16,
-    borderRadius: 20,
     width: Layout.window.width * 0.7,
   },
   teaserCard: {
-    overflow: "hidden",
+    borderRadius: 20,
     marginTop: 32,
     marginLeft: 32,
     marginBottom: 16,
-    borderRadius: 20,
     width: Layout.container.width,
   },
   teaserImageBackground: {
@@ -273,32 +295,31 @@ const styles = StyleSheet.create({
     top: 0,
   },
   actionCard: {
-    overflow: "hidden",
+    borderRadius: 20,
     backgroundColor: Colors.background,
     marginTop: 32,
     marginLeft: 32,
     marginBottom: 16,
-    borderRadius: 20,
     width: Layout.container.width,
   },
   cardShadow: {
-    shadowRadius: 44,
+    shadowColor: Colors.darkBlue,
     shadowOffset: {
       width: 0,
       height: 16,
     },
-    shadowColor: Colors.darkBlue,
     shadowOpacity: 0.13,
+    shadowRadius: 22,
     elevation: 20,
   },
   iconShadow: {
-    shadowRadius: 44,
+    shadowColor: Colors.darkBlue,
     shadowOffset: {
       width: 0,
       height: 16,
     },
-    shadowColor: Colors.darkBlue,
     shadowOpacity: 0.13,
+    shadowRadius: 22,
     elevation: 5,
   },
   image: {

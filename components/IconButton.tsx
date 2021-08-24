@@ -81,40 +81,39 @@ export const IconButton = function (props: {
 
   return (
     <View
-      style={[
-        { borderRadius },
-        styles.buttonWrapper,
-        fullWidth ? {} : styles.matchContent,
-        style,
-      ]}
+      style={[{ borderRadius }, fullWidth ? {} : styles.matchContent, style]}
     >
-      {onPress ? (
-        <TouchableNativeFeedback
-          onPress={onPress}
-          background={TouchableNativeFeedback.Ripple(
-            darken(0.1, backgroundColor),
-            false
-          )}
-        >
-          {iconButton}
-        </TouchableNativeFeedback>
-      ) : (
-        <>{iconButton}</>
-      )}
+      <View
+        style={{
+          overflow: "hidden",
+          borderRadius,
+        }}
+      >
+        {onPress ? (
+          <TouchableNativeFeedback
+            onPress={onPress}
+            background={TouchableNativeFeedback.Ripple(
+              darken(0.1, backgroundColor),
+              false
+            )}
+          >
+            {iconButton}
+          </TouchableNativeFeedback>
+        ) : (
+          <>{iconButton}</>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  buttonWrapper: {
-    overflow: "hidden",
-  },
   matchContent: {
     flexDirection: "row",
     flexWrap: "wrap",
   },
   fullWidth: {
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 });

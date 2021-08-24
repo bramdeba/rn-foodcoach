@@ -1,5 +1,5 @@
 import React from "react";
-import { Text as RNText, View, StyleProp, TextStyle } from "react-native";
+import { Text as RNText, View, StyleProp, TextStyle, Platform } from "react-native";
 import { transparentize } from "polished";
 import { ViewStyle } from "react-native";
 import Colors from "../constants/Colors";
@@ -49,7 +49,7 @@ export const Underline = function (props: {
           fontFamily: "Manrope_800ExtraBold",
           zIndex: 3,
           elevation: 3,
-          marginBottom: -6,
+          marginBottom: Platform.OS === 'android' ? -6 : -2,
           color: props.color || Colors.text,
         }}
       >
@@ -60,7 +60,7 @@ export const Underline = function (props: {
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: -4,
+          bottom: Platform.OS === 'android' ? -4 : 0,
           backgroundColor: transparentize(0.7, props.lineColor),
           height: 8,
         }}

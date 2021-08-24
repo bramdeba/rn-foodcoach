@@ -55,6 +55,7 @@ export default function PostScreen({
             />
             <IconButton
               name="share-outline"
+              borderRadius={12}
               style={[styles.shareIcon, styles.iconShadow]}
               onPress={handleShare}
             />
@@ -62,7 +63,9 @@ export default function PostScreen({
               show={!post}
               colors={[Colors.skeletonLight, Colors.skeletonDark]}
             >
-              <Title style={{maxWidth: '95%'}} size={30}>{post?.fields.Title}</Title>
+              <Title style={{ maxWidth: "95%" }} size={30}>
+                {post?.fields.Title}
+              </Title>
             </Skeleton>
             {!post && <BodySkeleton />}
             {post && (
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 32,
-    paddingTop: '65%',
+    paddingTop: "65%",
   },
   p: {
     marginVertical: 12,
@@ -142,17 +145,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 32,
     top: 32,
-    borderRadius: 12,
-    overflow: "hidden",
   },
   iconShadow: {
-    shadowRadius: 44,
+    shadowRadius: 8,
     shadowOffset: {
       width: 0,
-      height: 16,
+      height: 4,
     },
     shadowColor: Colors.darkBlue,
-    shadowOpacity: 0.13,
+    shadowOpacity: 0.20,
     elevation: 20,
-  }
+  },
 });
