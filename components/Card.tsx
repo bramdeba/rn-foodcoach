@@ -1,9 +1,15 @@
 import React from "react";
-import { View, Image, StyleSheet, TouchableNativeFeedback } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Pressable,
+  Platform,
+} from "react-native";
 import Layout from "./../constants/Layout";
 import ScalableImage from "react-native-scalable-image";
 import { ScrollView } from "react-native-gesture-handler";
-import { darken } from "polished";
+import { darken, transparentize } from "polished";
 import { GestureResponderEvent } from "react-native";
 import { Icon } from "@ui-kitten/components";
 
@@ -52,15 +58,22 @@ export const Card = function (props: {
       {onPress ? (
         <View style={[styles.card, styles.cardShadow]}>
           <View style={[styles.hideOverflow]}>
-            <TouchableNativeFeedback
+            <Pressable
               onPress={onPress}
-              background={TouchableNativeFeedback.Ripple(
-                darken(0.1, Colors.background),
-                false
-              )}
+              android_ripple={{
+                color: darken(0.1, Colors.background),
+                borderless: false,
+              }}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed && Platform.OS === 'ios'
+                  ? transparentize(0.7, darken(0.1, Colors.background))
+                  : undefined,
+                },
+              ]}
             >
               {card}
-            </TouchableNativeFeedback>
+            </Pressable>
           </View>
         </View>
       ) : (
@@ -176,15 +189,22 @@ export const TeaserCard = function (props: {
               style={styles.teaserImageBackground}
               source={require("./../assets/images/veggies/teaser.png")}
             />
-            <TouchableNativeFeedback
+            <Pressable
               onPress={onPress}
-              background={TouchableNativeFeedback.Ripple(
-                darken(0.1, backgroundColor),
-                false
-              )}
+              android_ripple={{
+                color: darken(0.1, backgroundColor),
+                borderless: false,
+              }}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed && Platform.OS === 'ios'
+                  ? transparentize(0.7, darken(0.1, backgroundColor))
+                  : undefined,
+                },
+              ]}
             >
               <View>{card}</View>
-            </TouchableNativeFeedback>
+            </Pressable>
           </View>
         </View>
       ) : (
@@ -248,16 +268,23 @@ export const ActionCard = function (props: {
               source={require("./../assets/images/veggies/action2.png")}
               style={{ position: "absolute", right: 0, bottom: 0 }}
             />
-            <TouchableNativeFeedback
+            <Pressable
               onPress={onPress}
-              background={TouchableNativeFeedback.Ripple(
-                darken(0.1, Colors.background),
-                false
-              )}
-              style={{ padding: 16 }}
+              android_ripple={{
+                color: darken(0.1, Colors.background),
+                borderless: false,
+              }}
+              style={({ pressed }) => [
+                {
+                  padding: 16,
+                  backgroundColor: pressed && Platform.OS === 'ios'
+                    ? transparentize(0.7, darken(0.1, Colors.background))
+                    : undefined,
+                },
+              ]}
             >
               {card}
-            </TouchableNativeFeedback>
+            </Pressable>
           </View>
         </View>
       ) : (

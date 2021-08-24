@@ -1,10 +1,10 @@
 import React from "react";
 import {
   GestureResponderEvent,
+  Pressable,
   StyleProp,
   StyleSheet,
   Text,
-  TouchableNativeFeedback,
   View,
   ViewStyle,
 } from "react-native";
@@ -90,15 +90,15 @@ export const IconButton = function (props: {
         }}
       >
         {onPress ? (
-          <TouchableNativeFeedback
+          <Pressable
             onPress={onPress}
-            background={TouchableNativeFeedback.Ripple(
-              darken(0.1, backgroundColor),
-              false
-            )}
+            android_ripple={{
+              color: darken(0.1, backgroundColor),
+              borderless: false,
+            }}
           >
             {iconButton}
-          </TouchableNativeFeedback>
+          </Pressable>
         ) : (
           <>{iconButton}</>
         )}

@@ -1,9 +1,9 @@
 import React from "react";
 import {
   GestureResponderEvent,
+  Pressable,
   StyleProp,
   Text,
-  TouchableNativeFeedback,
   View,
   ViewStyle,
 } from "react-native";
@@ -32,9 +32,9 @@ export const Button = function (props: {
         flexWrap: "wrap",
       }, style]}
     >
-      <TouchableNativeFeedback
+      <Pressable
         onPress={onPress}
-        background={TouchableNativeFeedback.Ripple(darken(0.1, backgroundColor), false)}
+        android_ripple={{color: darken(0.1, backgroundColor), borderless: false}}
       >
         <View
           style={{
@@ -53,7 +53,7 @@ export const Button = function (props: {
             {children}
           </Text>
         </View>
-      </TouchableNativeFeedback>
+      </Pressable>
     </View>
   );
 };

@@ -1,8 +1,6 @@
 import React from "react";
 import {
-  GestureResponderEvent,
   Text,
-  TouchableNativeFeedback,
   View,
 } from "react-native";
 
